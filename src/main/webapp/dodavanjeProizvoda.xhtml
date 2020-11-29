@@ -1,0 +1,133 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Dodavanje rasadnika</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
+        <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet"></link>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"></link>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"></link>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> 
+        <h:outputStylesheet library="css" name="style.css"></h:outputStylesheet>
+    </h:head>
+    <h:body>
+        <div class="signup-form">
+            <h:form prependId="false">
+                <h2>Dodavanje sadnice</h2>
+                <p class="hint-text">Nakon uspesnog dodavanja bicete vraceni na pocetnu stranu.</p>
+                <div class="form-group">
+                    <p:inputText class="form-control" 
+                                 value="#{preduController.s.naziv}"
+                                 required="true"
+                                 requiredMessage="Unesi naziv sadnice!"
+                                 id="kwNaziv">
+                    </p:inputText>
+                    <h:messages for='kwNaziv' style="color:red"></h:messages>
+                    <p:watermark for="kwNaziv" value="Naziv sadnice" id="wmNaziv" />
+                </div>
+                <div class="form-group">
+                    <p:inputText class="form-control" 
+                                 value="#{preduController.cenaFejk}"
+                                 required="true"
+                                 requiredMessage="Unesi cenu!"
+                                 id="kwCena">
+                    </p:inputText>
+                    <h:messages for='kwCena' style="color:red"></h:messages>
+                    <p:watermark for="kwCena" value="Cena po komadu" id="wmCena" />
+                </div>
+                <div class="form-group">
+                    <p:inputText class="form-control"
+                                 value="#{preduController.kolicinaFejk}"
+                                 required="true"
+                                 requiredMessage="Unesi kolicinu!"
+                                 id="kwKolicina"
+                                 converterMessage="Unesi samo brojeve!">
+                    </p:inputText>
+                    <h:messages for='kwKolicina' style="color:red"></h:messages>
+                    <p:watermark for="kwKolicina" value="Kolicina" id="wmKolicina" />
+                </div>
+                <br/>
+                <div class="form-group">
+                    <h:commandButton value='Dodaj sadnicu' 
+                                     action='#{preduController.dodavanjeSadnice()}'
+                                     class="btn btn-success btn-block">
+                    </h:commandButton>
+                </div>
+                <div class="clearfix" align="center">
+                    <h:outputText value='' style='color:red'></h:outputText>
+                </div> 
+                <hr></hr>
+            </h:form>
+
+            <hr/>
+
+            <h:form prependId="false">
+                <h2>Dodavanje preparata</h2>
+                <p class="hint-text">Nakon uspesnog dodavanja bicete vraceni na pocetnu stranu.</p>
+                <div class="form-group">
+                    <p:inputText class="form-control" 
+                                 value="#{preduController.p.naziv}"
+                                 required="true"
+                                 requiredMessage="Unesi naziv preparata!"
+                                 id="kwNaziv2">
+                    </p:inputText>
+                    <h:messages for='kwNaziv2' style="color:red"></h:messages>
+                    <p:watermark for="kwNaziv2" value="Naziv preparata" id="wmNaziv2" />
+                </div>
+                <div class="form-group">
+                    <p:inputText class="form-control" 
+                                 value="#{preduController.cenaFejk}"
+                                 required="true"
+                                 requiredMessage="Unesi cenu!"
+                                 id="kwCena2"
+                                 converterMessage="Unesi samo brojeve!">
+                    </p:inputText>
+                    <h:messages for='kwCena2' style="color:red"></h:messages>
+                    <p:watermark for="kwCena2" value="Cena po komadu" id="wmCena2" />
+                </div>
+                <div class="form-group">
+                    <p:inputText class="form-control"
+                                 value="#{preduController.kolicinaFejk}"
+                                 required="true"
+                                 requiredMessage="Unesi kolicinu!"
+                                 id="kwKolicina2"
+                                 converterMessage="Unesi samo brojeve!">
+                    </p:inputText>
+                    <h:messages for='kwKolicina2' style="color:red"></h:messages>
+                    <p:watermark for="kwKolicina2" value="Kolicina" id="wmKolicina2" />
+                </div>
+                <br/>
+                <div class="form-group">
+                    <h:commandButton value='Dodaj preparat' 
+                                     action='#{preduController.dodavanjePreparata()}'
+                                     class="btn btn-success btn-block">
+                    </h:commandButton>
+                </div>
+                <div class="clearfix" align="center">
+                    <h:outputText value='' style='color:red'></h:outputText>
+                </div> 
+                <hr></hr>
+                <div class="text-center">
+                    <a href="preduzece.xhtml">Povratak na pocetnu</a>
+                </div>
+                <h:commandScript name="commandName" action="#{rasadnikController.dekrementirajSve()}"/>
+            </h:form>
+        </div>
+    </h:body>
+    <script>
+        var myVar;
+
+        function myFunction() {
+            myVar = setInterval(alertFunc, 60000);
+        }
+
+        function alertFunc() {
+            commandName();
+            location.reload();
+        }
+    </script>
+</html>
+

@@ -1,0 +1,210 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Rasadnik - #{rasadnikController.rr.naziv}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"></meta>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"></link>
+        <h:outputStylesheet library="css" name="style.css"></h:outputStylesheet>
+        <f:event type="preRenderView" listener="#{rasadnikController.dohvatiRasadnik()}"></f:event>
+        <f:event type="preRenderView" listener="#{rasadnikController.dohvatiSadniceMagacin()}"></f:event>
+        <f:event type="preRenderView" listener="#{rasadnikController.dohvatiPreparateMagacin()}"></f:event>
+
+    </h:head>
+    <h:body onload="myFunction()">
+        <!-- Fixed navbar -->
+        <nav class="navbar navbar-expand-md navbar-light  bg-light" style="border-bottom: 1px solid">
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Meni
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <h:form>
+                                <h:commandLink class="dropdown-item" value="Pocetna" action="#{rasadnikController.pocetnaRedirect()}"></h:commandLink>
+                                <h:commandLink class="dropdown-item" value="Dodaj rasadnik" action="#{poljoController.rasadnikRedirect()}"></h:commandLink>
+                                <h:commandLink class="dropdown-item" value="Prodavnica" action="#{poljoController.prodavnicaRedirect()}"></h:commandLink> 
+                                <h:commandLink class="dropdown-item" value="Moje porudzbine" action="#{poljoController.mojePorudzbineRedirect()}"></h:commandLink>
+                            </h:form>
+                        </div>
+                    </li>
+                </ul>
+                <h:form class="form-inline mt-2 mt-md-0">
+                    <h:commandButton class="btn btn-outline-dark my-2 my-sm-0" action="#{poljoController.lozinkaRedirect()}" value="Promena lozinke"></h:commandButton>
+                    &nbsp;
+                    <h:commandButton class="btn btn-outline-dark my-2 my-sm-0" action="#{loginController.logout()}" value="Logout"></h:commandButton>
+                </h:form>
+            </div>
+        </nav>
+        <div align="center">
+            <br/>
+            <h3>Rasadnik - #{rasadnikController.rr.naziv}</h3>
+            <br/>
+            Tacno je: <p:clock pattern="HH:mm:ss"></p:clock>
+            <br/><br/>
+            <h:form>
+                <p:poll listener="#{rasadnikController.cb.increment}" update="display" interval="3600"></p:poll>
+                <h:panelGrid id="dugmici" columns="3">
+                    <h:outputLabel id="display" value = "Trenutna temperatura: #{rasadnikController.rr.temperatura} [C]" />
+                    <h:commandButton value='+' 
+                                     action='#{rasadnikController.promenaTemperature(1)}'
+                                     class="btn btn-light btn-block">
+                    </h:commandButton>
+                    <h:commandButton value='-' 
+                                     action='#{rasadnikController.promenaTemperature(-1)}'
+                                     class="btn btn-light btn-block">
+                    </h:commandButton>
+
+                    <h:outputLabel value = "Trenutno vode: #{rasadnikController.rr.voda} [l]" />
+                    <h:commandButton value='+' 
+                                     action='#{rasadnikController.promenaVode(1)}'
+                                     class="btn btn-light btn-block">
+                    </h:commandButton>
+                    <h:commandButton value='-' 
+                                     action='#{rasadnikController.promenaVode(-1)}'
+                                     class="btn btn-light btn-block">
+                    </h:commandButton>
+                </h:panelGrid>
+            </h:form>
+            <br/>
+            <h:form id="form" style="border: 1px; width: 80%;">
+                <p:dataGrid var="sadnica" value="#{rasadnikController.sadnice}" 
+                            columns="#{rasadnikController.rr.sirina}" layout="grid"
+                            id="sadnice">
+                    <f:facet name="header">
+                        Sadnice
+                    </f:facet>
+                    <p:panel header="#{sadnica.naziv}" style="text-align:center">
+                        <h:panelGrid columns="1" style="width:100%">
+                            <p:graphicImage name="/images/#{sadnica.naziv=='Prazno mesto'?'prazno':'sadnica'}.jpg" style="width:50%"></p:graphicImage>
+                            <h:outputText rendered="#{sadnica.naziv!='Prazno mesto'}" value="Proizvodjac: #{sadnica.preduzece}" />
+                            <h:outputText rendered="#{sadnica.naziv!='Prazno mesto'}" value=" Napredak: #{sadnica.napredak} %" />
+                            <h:commandButton value="Ukloni sadnicu" 
+                                             rendered="#{sadnica.naziv!='Prazno mesto'}" 
+                                             action="#{rasadnikController.ukloniSadnicu(sadnica)}">
+                            </h:commandButton>
+                        </h:panelGrid>
+                    </p:panel>
+                </p:dataGrid>
+            </h:form>
+        </div>
+        <br/><br/><br/>
+        <h3 align="center">Magacin rasadnika</h3>
+        <div align="center">
+            <br/>
+            <h:form id="form4" style="width:80%;">
+                <p:dataTable id="sadnica" 
+                             var="sad" 
+                             value="#{rasadnikController.sadniceMagacin}" 
+                             editable="true" 
+                             style="margin-bottom:20px; text-align: center;"
+                             widgetVar="sadTable2"
+                             emptyMessage="Trazena sadnica ne postoji!" 
+                             filteredValue="#{rasadnikController.sveSadniceFiltrirano}"
+                             globalFilterFunction="#{rasadnikController.globalFilterFunction}">
+                    <f:facet name="header">
+                        <p:outputPanel style="text-align:left">
+                            <h:outputText value="Pretrazi sadnice:&nbsp;&nbsp;"/>
+                            <p:inputText id="globalFilter" onkeyup="PF('sadTable2').filter()" style="width:150px" placeholder="Unesi sadnicu"/>
+                        </p:outputPanel>
+                    </f:facet>
+                    <p:column headerText="Naziv" sortBy="#{sad.naziv}">
+                        <p:cellEditor>
+                            <f:facet name="output"><h:outputText value="#{sad.naziv}" /></f:facet>
+                            <f:facet name="input"><p:inputText value="#{sad.naziv}" style="width:100%"/></f:facet>
+                        </p:cellEditor>
+                    </p:column>
+                    <p:column headerText="Proizvodjac" sortBy="#{sad.preduzece}">
+                        <p:cellEditor>
+                            <f:facet name="output"><h:outputText value="#{sad.preduzece}" /></f:facet>
+                            <f:facet name="input"><p:inputText value="#{sad.preduzece}" style="width:100%"/></f:facet>
+                        </p:cellEditor>
+                    </p:column>
+                    <p:column headerText="Kolicina" sortBy="#{sad.kolicina}">
+                        <p:cellEditor>
+                            <f:facet name="output"><h:outputText value="#{sad.kolicina}" /></f:facet>
+                            <f:facet name="input"><p:inputText value="#{sad.kolicina}" style="width:100%"/></f:facet>
+                        </p:cellEditor>
+                    </p:column>
+                    <p:column>
+                        <h:commandButton value="Dodaj sadnicu" 
+                                         rendered="#{rasadnikController.rr.brojSadnica lt rasadnikController.rr.kapacitet}" 
+                                         action="#{rasadnikController.dodajSadnicu(sad.naziv)}">
+                        </h:commandButton> 
+                    </p:column>
+                </p:dataTable>
+            </h:form>
+        </div>
+
+
+        <div align="center">
+            <br/>
+            <!-- u tag za formu: rendered="#{preduController.sadnice ne null}-->
+            <h:form id="form5" style="width:80%;">
+                <p:dataTable id="preparat" 
+                             var="prep" 
+                             value="#{rasadnikController.preparatiMagacin}" 
+                             editable="true" 
+                             style="margin-bottom:20px; text-align: center;"
+                             widgetVar="prepTable2"
+                             emptyMessage="Trazeni preparat ne postoji!" 
+                             filteredValue="#{rasadnikController.sviPreparatiFiltrirano}"
+                             globalFilterFunction="#{rasadnikController.globalFilterFunction}">
+                    <f:facet name="header">
+                        <p:outputPanel style="text-align:left">
+                            <h:outputText value="Pretrazi preparate:&nbsp;&nbsp;"/>
+                            <p:inputText id="globalFilter" onkeyup="PF('prepTable2').filter()" style="width:150px" placeholder="Unesi preparat"/>
+                        </p:outputPanel>
+                    </f:facet>
+                    <p:column headerText="Naziv" sortBy="#{prep.naziv}">
+                        <p:cellEditor>
+                            <f:facet name="output"><h:outputText value="#{prep.naziv}" /></f:facet>
+                            <f:facet name="input"><p:inputText value="#{prep.naziv}" style="width:100%"/></f:facet>
+                        </p:cellEditor>
+                    </p:column>
+                    <p:column headerText="Proizvodjac" sortBy="#{prep.preduzece}">
+                        <p:cellEditor>
+                            <f:facet name="output"><h:outputText value="#{prep.preduzece}" /></f:facet>
+                            <f:facet name="input"><p:inputText value="#{prep.preduzece}" style="width:100%"/></f:facet>
+                        </p:cellEditor>
+                    </p:column>
+                    <p:column headerText="Kolicina" sortBy="#{prep.kolicina}">
+                        <p:cellEditor>
+                            <f:facet name="output"><h:outputText value="#{prep.kolicina}" /></f:facet>
+                            <f:facet name="input"><p:inputText value="#{prep.kolicina}" style="width:100%"/></f:facet>
+                        </p:cellEditor>
+                    </p:column>
+                </p:dataTable>
+                <h:commandScript name="commandName" action="#{rasadnikController.dekrementiraj()}"/>
+            </h:form>
+        </div>
+
+        <br/><br/><br/>
+        <footer class="footer" style="position: fixed;">
+            <div class="container" align="center">
+                <span class="text-muted">PIA 2020 © Copyright Boško Ćurčin, SI ETF. </span>
+            </div>
+        </footer>
+        <script>
+            var myVar;
+
+            function myFunction() {
+                myVar = setInterval(alertFunc, 60000);
+            }
+
+            function alertFunc() {
+                alert("Promena u rasadnicima");
+                commandName();
+                location.reload();
+            }
+        </script>
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    </h:body>
+</html>
+

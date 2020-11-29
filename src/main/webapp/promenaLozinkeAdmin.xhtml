@@ -1,0 +1,77 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <h:head>
+        <title>Promena lozinke</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
+        <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet"></link>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"></link>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"></link>
+        <h:outputStylesheet library="css" name="style.css"></h:outputStylesheet>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> 
+        <script src="https://www.google.com/recaptcha/api.js"></script>
+    </h:head>
+    <h:body id="slika">   
+        <div class="signup-form">
+            <h:form>
+                <h2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;Promena &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;lozinke</h2>
+                <p class="hint-text">Nakon uspesne promene bicete izlogovani iz sistema.</p>
+                <div class="form-group">
+                    <p:password class="form-control"
+                                value="#{adminController.pw1}"
+                                required="true"
+                                requiredMessage="Unesi password!"
+                                validatorMessage="Min 7 karaktera - pocetno slovo, bar 1 veliko, 1 broj i 1 specijalni!"
+                                id="kwPass">
+                        <f:validateRegex pattern="((?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!?\.,@#$%]).{7,})" />
+                    </p:password>
+                    <h:messages for='kwPass' style="color:red"></h:messages>
+                    <p:watermark for="kwPass" value="Stara lozinka" id="wmPass"></p:watermark>
+                </div>
+                <div class="form-group">
+                    <p:password class="form-control"
+                                value="#{adminController.pw2}"
+                                required="true"
+                                requiredMessage="Unesi password!"
+                                validatorMessage="Min 7 karaktera - pocetno slovo, bar 1 veliko, 1 broj i 1 specijalni!"
+                                id="kwPass2">
+                        <f:validateRegex pattern="((?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!?\.,@#$%]).{7,})" />
+                    </p:password>
+                    <h:messages for='kwPass2' style="color:red"></h:messages>
+                    <p:watermark for="kwPass2" value="Novi lozinka" id="wmPass2"></p:watermark>
+                </div>  
+                <div class="form-group">
+                    <p:password class="form-control"
+                                value="#{adminController.pw3}"
+                                required="true"
+                                requiredMessage="Unesi password!"
+                                validatorMessage="Min 7 karaktera - pocetno slovo, bar 1 veliko, 1 broj i 1 specijalni!"
+                                id="kwPass3">
+                    </p:password>
+                    <h:messages for='kwPass3' style="color:red"></h:messages>
+                    <p:watermark for="kwPass3" value="Ponovi lozinku" id="wmPass3"></p:watermark>
+                </div>  
+                <br/>
+                <div class="form-group">
+                    <h:commandButton value='Promeni lozinku' 
+                                     action='#{adminController.promeniLozinku()}'
+                                     class="btn btn-success btn-block">
+                    </h:commandButton>
+                </div>
+                <div class="clearfix" align="center">
+                    <h:outputText value='#{adminController.poruka}' style='color:red'></h:outputText>
+                </div>     
+                <hr></hr>
+                <div class="text-center">
+                    <a href="admin.xhtml">Povratak na pocetnu</a>
+                </div>
+            </h:form>
+        </div>
+    </h:body>
+</html>
+

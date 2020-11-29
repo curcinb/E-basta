@@ -1,0 +1,145 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Prodavnica</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"></meta>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous"></link>
+        <h:outputStylesheet library="css" name="style.css"></h:outputStylesheet>
+        <f:event type="preRenderView" listener="#{poljoController.dohvatiZaRadnju()}"></f:event>
+        <f:event type="preRenderView" listener="#{poljoController.dohvatiMojePorudzbine()}"></f:event>
+    </h:head>
+    <h:body>
+        <!-- Fixed navbar -->
+        <nav class="navbar navbar-expand-md navbar-light  bg-light" style="border-bottom: 1px solid">
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Meni
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <h:form>
+                                <h:commandLink class="dropdown-item" value="Pocetna" action="#{poljoController.pocetnaRedirect()}"></h:commandLink>
+                                <h:commandLink class="dropdown-item" value="Dodaj rasadnik" action="#{poljoController.rasadnikRedirect()}"></h:commandLink>
+                                <h:commandLink class="dropdown-item" value="Prodavnica" action="#{poljoController.prodavnicaRedirect()}"></h:commandLink>
+                                <h:commandLink class="dropdown-item" value="Moje porudzbine" action="#{poljoController.mojePorudzbineRedirect()}"></h:commandLink>
+                            </h:form>
+                        </div>
+                    </li>
+                </ul>
+                <h:form class="form-inline mt-2 mt-md-0">
+                    <h:commandButton class="btn btn-outline-dark my-2 my-sm-0" action="#{poljoController.lozinkaRedirect()}" value="Promena lozinke"></h:commandButton>
+                    &nbsp;
+                    <h:commandButton class="btn btn-outline-dark my-2 my-sm-0" action="#{loginController.logout()}" value="Logout"></h:commandButton>
+                </h:form>
+            </div>
+        </nav>
+
+        <div class="jumbotron jumbotron-fluid">
+            <div class="container">
+                <h1 class="display-4">Ovde mozete da kupite sve!</h1>
+            </div>
+        </div>
+
+        <div align="center">
+            <h:form style="width:80%;">
+                <h4 align="center"> Sadnice</h4>
+                <p:dataTable var="sad" value="#{poljoController.sveSadnice}"
+                             widgetVar="sadTable2"
+                             emptyMessage="Trazena sadnica ne postoji!" 
+                             filteredValue="#{poljoController.sveSadniceFiltrirano}"
+                             globalFilterFunction="#{poljoController.globalFilterFunction}">
+
+                    <f:facet name="header">
+                        <p:outputPanel style="text-align:left">
+                            <h:outputText value="Pretrazi sadnice:&nbsp;&nbsp;"/>
+                            <p:inputText id="globalFilter" onkeyup="PF('sadTable2').filter()" style="width:150px" placeholder="Unesi sadnicu"/>
+                        </p:outputPanel>
+                    </f:facet>
+
+                    <p:column headerText="Naziv" sortBy="#{sad.naziv}">
+                        <h:outputText value="#{sad.naziv}" />
+                    </p:column>
+
+                    <p:column headerText="Preduzece" sortBy="#{sad.preduzece}">
+                        <h:outputText value="#{sad.preduzece}" />
+                    </p:column>
+
+                    <p:column headerText="Cena po komadu" sortBy="#{sad.cena}">
+                        <h:outputText value="#{sad.cena}" />
+                    </p:column>
+
+                    <p:column headerText="Raspolozivo" sortBy="#{sad.kolicina}">
+                        <h:outputText value="#{sad.kolicina}" />
+                    </p:column>
+
+                    <p:column headerText="Poruci" style="text-align:center">
+                        <h:commandButton value="1 komad" action="#{poljoController.poruciSadnicu(sad)}"></h:commandButton>
+                    </p:column>
+                </p:dataTable>
+            </h:form>
+        </div>
+
+        <br/><br/><br/>
+
+        <div align="center">
+            <h:form style="width:80%;">
+                <h4 align="center">Preparati</h4>
+                <p:dataTable var="prep" 
+                             value="#{poljoController.sviPreparati}"
+                             widgetVar="prepTable2"
+                             emptyMessage="Trazeni preparat ne postoji!" 
+                             filteredValue="#{poljoController.sviPreparatiFiltrirano}"
+                             globalFilterFunction="#{poljoController.globalFilterFunction}">
+
+                    <f:facet name="header">
+                        <p:outputPanel style="text-align:left">
+                            <h:outputText value="Pretrazi preparate:&nbsp;&nbsp;"/>
+                            <p:inputText id="globalFilter" onkeyup="PF('prepTable2').filter()" style="width:150px" placeholder="Unesi preparat"/>
+                        </p:outputPanel>
+                    </f:facet>
+
+                    <p:column headerText="Naziv" sortBy="#{prep.naziv}">
+                        <h:outputText value="#{prep.naziv}" />
+                    </p:column>
+
+                    <p:column headerText="Preduzece" sortBy="#{prep.preduzece}">
+                        <h:outputText value="#{prep.preduzece}" />
+                    </p:column>
+
+                    <p:column headerText="Cena po komadu" sortBy="#{prep.cena}">
+                        <h:outputText value="#{prep.cena}" />
+                    </p:column>
+
+                    <p:column headerText="Raspolozivo" sortBy="#{prep.kolicina}">
+                        <h:outputText value="#{prep.kolicina}" />
+                    </p:column>
+
+                    <p:column headerText="Poruci" style="text-align:center">
+                        <h:commandButton value="1 komad" action="#{poljoController.poruciPreparat(prep)}"></h:commandButton>
+                    </p:column>
+                </p:dataTable>
+            </h:form>
+        </div>
+
+        <br/><br/><br/>
+
+        <footer class="footer">
+            <div class="container" align="center">
+                <span class="text-muted">PIA 2020 © Copyright Boško Ćurčin, SI ETF. </span>
+            </div>
+        </footer>
+
+        <!-- Bootstrap core JavaScript
+        ================================================== -->
+        <!-- Placed at the end of the document so the pages load faster -->
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    </h:body>
+</html>
+

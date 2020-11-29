@@ -1,0 +1,121 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Prodavnica</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"></meta>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous"></link>
+        <h:outputStylesheet library="css" name="style.css"></h:outputStylesheet>
+        <f:event type="preRenderView" listener="#{poljoController.dohvatiZaRadnju()}"></f:event>
+        <f:event type="preRenderView" listener="#{poljoController.dohvatiMojePorudzbine()}"></f:event>
+    </h:head>
+    <h:body>
+        <!-- Fixed navbar -->
+        <nav class="navbar navbar-expand-md navbar-light  bg-light" style="border-bottom: 1px solid">
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Meni
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <h:form>
+                                <h:commandLink class="dropdown-item" value="Pocetna" action="#{poljoController.pocetnaRedirect()}"></h:commandLink>
+                                <h:commandLink class="dropdown-item" value="Dodaj rasadnik" action="#{poljoController.rasadnikRedirect()}"></h:commandLink>
+                                <h:commandLink class="dropdown-item" value="Prodavnica" action="#{poljoController.prodavnicaRedirect()}"></h:commandLink>
+                                <h:commandLink class="dropdown-item" value="Prodavnica" action="#{poljoController.mojePorudzbineRedirect()}"></h:commandLink>
+                            </h:form>
+                        </div>
+                    </li>
+                </ul>
+                <h:form class="form-inline mt-2 mt-md-0">
+                    <h:commandButton class="btn btn-outline-dark my-2 my-sm-0" action="#{poljoController.lozinkaRedirect()}" value="Promena lozinke"></h:commandButton>
+                    &nbsp;
+                    <h:commandButton class="btn btn-outline-dark my-2 my-sm-0" action="#{loginController.logout()}" value="Logout"></h:commandButton>
+                </h:form>
+            </div>
+        </nav>
+
+        <br/><br/><br/>
+
+        <div align="center">
+            <h:form style="width:80%;">
+                <p:dataTable var="poru" 
+                             value="#{poljoController.mojePorudzbine}">
+
+                    <f:facet name="header">
+                        Moje porudzbine
+                    </f:facet>
+
+                    <p:column headerText="IdP" sortBy="#{poru.idP}">
+                        <h:outputText value="#{poru.idP}" />
+                    </p:column>
+
+                    <p:column headerText="Proizvod" sortBy="#{poru.nazivProizvoda}">
+                        <h:outputText value="#{poru.nazivProizvoda}" />
+                    </p:column>
+
+
+                    <p:column headerText="Preduzece" sortBy="#{poru.nazivProivodjaca}">
+                        <h:outputText value="#{poru.nazivProivodjaca}" />
+                    </p:column>
+
+                    <p:column headerText="Kolicina" sortBy="#{poru.kolicina}">
+                        <h:outputText value="#{poru.kolicina}" />
+                    </p:column>
+
+                    <p:column headerText="Iznos" sortBy="#{poru.iznos}">
+                        <h:outputText value="#{poru.iznos}" />
+                    </p:column>
+
+                    <p:column headerText="Datum" sortBy="#{poru.datumPorudzbine}">
+                        <h:outputText value="#{poru.datumPorudzbine}" />
+                    </p:column>
+
+                    <p:column headerText="Status" sortBy="#{poru.status}">
+                        <h:outputText value="#{poru.status}" />
+                    </p:column>
+
+                    <p:column>
+                        <h:commandButton 
+                            value="Otkazi" 
+                            action="#{poljoController.otkaziPorudzbinu(poru.idP)}"
+                            rendered="#{poru.status=='NA CEKANJU'}">
+                        </h:commandButton>
+                    </p:column>
+                </p:dataTable>
+                <h:commandScript name="commandName" action="#{rasadnikController.dekrementirajSve()}"/>
+            </h:form>
+        </div>
+
+        <br/><br/><br/>
+
+        <footer class="footer">
+            <div class="container" align="center">
+                <span class="text-muted">PIA 2020 © Copyright Boško Ćurčin, SI ETF. </span>
+            </div>
+        </footer>
+        <script>
+            var myVar;
+
+            function myFunction() {
+                myVar = setInterval(alertFunc, 50000);
+            }
+
+            function alertFunc() {
+                commandName();
+                location.reload();
+            }
+        </script>
+        <!-- Bootstrap core JavaScript
+        ================================================== -->
+        <!-- Placed at the end of the document so the pages load faster -->
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    </h:body>
+</html>
+

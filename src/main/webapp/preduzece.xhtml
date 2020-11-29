@@ -1,0 +1,258 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Preduzece</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"></meta>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous"></link>
+        <h:outputStylesheet library="css" name="style.css"></h:outputStylesheet>
+        <f:event type="preRenderView" listener="#{preduController.dohvatiSve()}"></f:event>
+    </h:head>
+    <h:body>
+        <!-- Fixed navbar -->
+        <nav class="navbar navbar-expand-md navbar-light  bg-light" style="border-bottom: 1px solid">
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Meni
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <h:form>
+                                <h:commandLink class="dropdown-item" value="Pocetna" action="#{preduController.pocetnaRedirect()}"></h:commandLink>
+                                <h:commandLink class="dropdown-item" value="Dodavanje proizvoda" action="#{preduController.proizvodRedirect()}"></h:commandLink>
+                            </h:form>
+                        </div>
+                    </li>
+                </ul>
+                <h:form class="form-inline mt-2 mt-md-0">
+                    <h:commandButton class="btn btn-outline-dark my-2 my-sm-0" action="#{preduController.lozinkaRedirect()}" value="Promena lozinke"></h:commandButton>
+                    &nbsp;
+                    <h:commandButton class="btn btn-outline-dark my-2 my-sm-0" action="#{loginController.logout()}" value="Logout"></h:commandButton>
+                </h:form>
+            </div>
+        </nav>
+
+        <div class="jumbotron jumbotron-fluid">
+            <div class="container">
+                <h1 class="display-4">Dobrodosli, #{preduController.pr.naziv} !</h1>
+            </div>
+        </div>
+
+        <div align="center">
+            <h:form id="form3" style="width:80%;">
+                <p:growl id="msgs3" showDetail="true"/>
+                <p:dataTable id="porudzbina" var="po" value="#{preduController.porudzbine}" editable="true" style="margin-bottom:20px; text-align: center;">
+                    <f:facet name="header">
+                        Porudzbine
+                    </f:facet>
+                    <p:ajax event="rowEdit" listener="#{preduController.onRowEdit1}" update=":form3:msgs3" />
+                    <p:ajax event="rowEditCancel" listener="#{preduController.onRowCancel1}" update=":form3:msgs3" />
+                    <p:column headerText="Sifra porudzbine" sortBy="#{po.idP}">
+                        <h:outputText value="#{po.idP}"/>
+                    </p:column>
+                    <p:column headerText="Naziv proizvoda" sortBy="#{po.nazivProizvoda}">
+                        <p:cellEditor>
+                            <f:facet name="output"><h:outputText value="#{po.nazivProizvoda}" /></f:facet>
+                            <f:facet name="input"><p:inputText value="#{po.nazivProizvoda}" style="width:100%"/></f:facet>
+                        </p:cellEditor>
+                    </p:column>
+                    <p:column headerText="Kolicina" sortBy="#{po.kolicina}">
+                        <p:cellEditor>
+                            <f:facet name="output"><h:outputText value="#{po.kolicina}" /></f:facet>
+                            <f:facet name="input"><p:inputText value="#{po.kolicina}" style="width:100%"/></f:facet>
+                        </p:cellEditor>
+                    </p:column>
+                    <p:column headerText="Datum porudzbine" sortBy="#{po.datumPorudzbine}">
+                        <p:cellEditor>
+                            <f:facet name="output"><h:outputText value="#{po.datumPorudzbine}" /></f:facet>
+                            <f:facet name="input"><p:calendar value="#{po.datumPorudzbine}" style="width:100%"/></f:facet>
+                        </p:cellEditor>
+                    </p:column>
+                    <p:column headerText="Status" sortBy="#{po.status}">
+                        <p:cellEditor>
+                            <f:facet name="output"><h:outputText value="#{po.status}" /></f:facet>
+                            <f:facet name="input"><p:inputText value="#{po.status}" style="width:100%"/></f:facet>
+                        </p:cellEditor>
+                    </p:column>
+                    <p:column headerText="Naziv kupca" sortBy="#{po.imeKupca}">
+                        <p:cellEditor>
+                            <f:facet name="output"><h:outputText value="#{po.imeKupca}" /></f:facet>
+                            <f:facet name="input"><p:inputText value="#{po.imeKupca}" style="width:100%"/></f:facet>
+                        </p:cellEditor>
+                    </p:column>
+                    <p:column headerText="Iznos" sortBy="#{po.iznos}">
+                        <p:cellEditor>
+                            <f:facet name="output"><h:outputText value="#{po.iznos}" /></f:facet>
+                            <f:facet name="input"><p:inputText value="#{po.iznos}" style="width:100%"/></f:facet>
+                        </p:cellEditor>
+                    </p:column>
+                    <p:column style="width:35px">
+                        <p:rowEditor />
+                    </p:column>
+                    <p:column>
+                        <h:commandButton value='Prihvati' 
+                                         action='#{preduController.prihvatiPorudzbinu(po)}'
+                                         class="btn btn-light btn-block"
+                                         rendered="#{po.status=='NA CEKANJU'}">
+                        </h:commandButton>
+                    </p:column>
+                    <p:column>
+                        <h:commandButton value='Obrisi' 
+                                         action='#{preduController.obrisiPorudzbinu(po)}'
+                                         class="btn btn-light btn-block">
+                        </h:commandButton>
+                    </p:column>
+                </p:dataTable>
+            </h:form>
+        </div>
+
+        <br/> <br/>
+
+
+
+        <div align="center">
+            <!-- u tag za formu: rendered="#{preduController.sadnice ne null}-->
+            <h:form id="form4" style="width:80%;">
+                <p:growl id="msgs4" showDetail="true"/>
+                <p:dataTable id="sadnica" var="pr" value="#{preduController.sadnice}" editable="true" style="margin-bottom:20px; text-align: center;">
+                    <f:facet name="header">
+                        Sadnice
+                    </f:facet>
+                    <p:ajax event="rowEdit" listener="#{preduController.onRowEdit2}" update=":form4:msgs4" />
+                    <p:ajax event="rowEditCancel" listener="#{preduController.onRowCancel2}" update=":form4:msgs4" />
+                    <p:column headerText="ID sadnice" sortBy="#{pr.idS}">
+                        <h:outputText value="#{pr.idS}" />
+                    </p:column>
+                    <p:column headerText="Naziv" sortBy="#{pr.naziv}">
+                        <p:cellEditor>
+                            <f:facet name="output"><h:outputText value="#{pr.naziv}" /></f:facet>
+                            <f:facet name="input"><p:inputText value="#{pr.naziv}" style="width:100%"/></f:facet>
+                        </p:cellEditor>
+                    </p:column>
+                    <p:column headerText="Cena" sortBy="#{pr.cena}">
+                        <p:cellEditor>
+                            <f:facet name="output"><h:outputText value="#{pr.cena}" /></f:facet>
+                            <f:facet name="input"><p:inputText value="#{pr.cena}" style="width:100%"/></f:facet>
+                        </p:cellEditor>
+                    </p:column>
+                    <p:column headerText="Kolicina" sortBy="#{pr.kolicina}">
+                        <p:cellEditor>
+                            <f:facet name="output"><h:outputText value="#{pr.kolicina}" /></f:facet>
+                            <f:facet name="input"><p:inputText value="#{pr.kolicina}" style="width:100%"/></f:facet>
+                        </p:cellEditor>
+                    </p:column>
+                    <p:column style="width:35px">
+                        <p:rowEditor />
+                    </p:column>
+                    <p:column>
+                        <h:commandButton value='Obrisi' 
+                                         action='#{preduController.obrisiSadnicu(pr)}'
+                                         class="btn btn-light btn-block">
+                        </h:commandButton>
+                    </p:column>
+                </p:dataTable>
+            </h:form>
+        </div>
+
+        <br/><br/>
+
+        <div align="center">
+            <!-- u tag za formu: rendered="#{preduController.sadnice ne null}-->
+            <h:form id="form5" style="width:80%;">
+                <p:growl id="msgs5" showDetail="true"/>
+                <p:dataTable id="preparat" var="pp" value="#{preduController.preparati}" editable="true" style="margin-bottom:20px; text-align: center;">
+                    <f:facet name="header">
+                        Preparati
+                    </f:facet>
+                    <p:ajax event="rowEdit" listener="#{preduController.onRowEdit3}" update=":form5:msgs5" />
+                    <p:ajax event="rowEditCancel" listener="#{preduController.onRowCancel3}" update=":form5:msgs5" />
+
+                    <p:column headerText="ID preparata" sortBy="#{pp.idP}">
+                        <h:outputText value="#{pp.idP}" />
+                    </p:column>
+                    <p:column headerText="Naziv" sortBy="#{pp.naziv}">
+                        <p:cellEditor>
+                            <f:facet name="output"><h:outputText value="#{pp.naziv}" /></f:facet>
+                            <f:facet name="input"><p:inputText value="#{pp.naziv}" style="width:100%"/></f:facet>
+                        </p:cellEditor>
+                    </p:column>
+                    <p:column headerText="Cena" sortBy="#{pp.cena}">
+                        <p:cellEditor>
+                            <f:facet name="output"><h:outputText value="#{pp.cena}" /></f:facet>
+                            <f:facet name="input"><p:inputText value="#{pp.cena}" style="width:100%"/></f:facet>
+                        </p:cellEditor>
+                    </p:column>
+                    <p:column headerText="Kolicina" sortBy="#{pp.kolicina}">
+                        <p:cellEditor>
+                            <f:facet name="output"><h:outputText value="#{pp.kolicina}" /></f:facet>
+                            <f:facet name="input"><p:inputText value="#{pp.kolicina}" style="width:100%"/></f:facet>
+                        </p:cellEditor>
+                    </p:column>
+                    <p:column style="width:35px">
+                        <p:rowEditor />
+                    </p:column>
+                    <p:column>
+                        <h:commandButton value='Obrisi' 
+                                         action='#{preduController.obrisiPreparat(pp)}'
+                                         class="btn btn-light btn-block">
+                        </h:commandButton>
+                    </p:column>
+                </p:dataTable>
+            </h:form>
+        </div>
+
+        <br/><br/>
+        <div align="center">
+            <h:form style="width:80%;">
+                <p:dataTable var="porudzbina2" value="#{preduController.porudzbine2}" style="margin-bottom:20px; text-align: center;">
+                    <f:facet name="header">
+                        Pregled porudzbina u proteklih 30 dana
+                    </f:facet>
+                    <p:column headerText="Datum" style="text-align:center" sortBy="#{porudzbina2.datumPorudzbine}">
+                        <h:outputText value="#{porudzbina2.datumPorudzbine}" />
+                    </p:column>
+
+                    <p:column headerText="Kolicina" style="text-align:center" sortBy="#{porudzbina2.kolicina}">
+                        <h:outputText value="#{porudzbina2.kolicina}" />
+                    </p:column>
+
+                    <p:column headerText="Zarada" style="text-align:center" sortBy="#{porudzbina2.iznos}">
+                        <h:outputText value="#{porudzbina2.iznos}" />
+                    </p:column>
+                </p:dataTable>
+                <h:commandScript name="commandName" action="#{rasadnikController.dekrementirajSve()}"/>
+            </h:form>
+        </div>
+
+        <br/><br/>
+
+        <footer class="footer">
+            <div class="container" align="center">
+                <span class="text-muted">PIA 2020 © Copyright Boško Ćurčin, SI ETF. </span>
+            </div>
+        </footer>
+
+        <script>
+            var myVar;
+
+            function myFunction() {
+                myVar = setInterval(alertFunc, 60000);
+            }
+
+            function alertFunc() {
+                commandName();
+                location.reload();
+            }
+        </script>
+        <!-- Bootstrap core JavaScript
+        ================================================== -->
+        <!-- Placed at the end of the document so the pages load faster -->
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    </h:body>
+</html>
+

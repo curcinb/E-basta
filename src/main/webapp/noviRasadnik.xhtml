@@ -1,0 +1,81 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Dodavanje rasadnika</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
+        <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet"></link>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"></link>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"></link>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> 
+        <h:outputStylesheet library="css" name="style.css"></h:outputStylesheet>
+    </h:head>
+    <h:body>
+        <div class="signup-form">
+            <h:form prependId="false">
+                <h2>Dodavanje rasadnika</h2>
+                <p class="hint-text">Nakon uspesnog dodavanja bicete vraceni na pocetnu stranu.</p>
+                <div class="form-group">
+                    <p:inputText class="form-control" 
+                                 value="#{poljoController.r.naziv}"
+                                 required="true"
+                                 requiredMessage="Unesi naziv!"
+                                 id="kwNaziv">
+                    </p:inputText>
+                    <h:messages for='kwNaziv' style="color:red"></h:messages>
+                    <p:watermark for="kwNaziv" value="Naziv" id="wmNaziv" />
+                </div>
+                <div class="form-group">
+                    <p:inputText class="form-control" 
+                                 value="#{poljoController.r.mesto}"
+                                 required="true"
+                                 requiredMessage="Unesi mesto!"
+                                 id="kwMesto">
+                    </p:inputText>
+                    <h:messages for='kwMesto' style="color:red"></h:messages>
+                    <p:watermark for="kwMesto" value="Lokacija" id="wmLokacija" />
+                </div>
+                <div class="form-group">
+                    <p:inputText class="form-control"
+                                 value="#{poljoController.r.duzinaFejk}"
+                                 required="true"
+                                 requiredMessage="Unesi duzinu!"
+                                 id="kwDuzina"
+                                 converterMessage="Unesi samo brojeve!">
+                    </p:inputText>
+                    <h:messages for='kwDuzina' style="color:red"></h:messages>
+                    <p:watermark for="kwDuzina" value="Duzina[m]" id="wmDuzina" />
+                </div>
+                <div class="form-group">
+                    <p:inputText class="form-control"
+                                 value="#{poljoController.r.sirinaFejk}"
+                                 required="true"
+                                 requiredMessage="Unesi sirinu!"
+                                 id="kwSirina"
+                                 converterMessage="Unesi samo brojeve!">
+                    </p:inputText>
+                    <h:messages for='kwSirina' style="color:red"></h:messages>
+                    <p:watermark for="kwSirina" value="Sirina[m]" id="wmSirina" />
+                </div>
+                <br/>
+                <div class="form-group">
+                    <h:commandButton value='Dodaj rasadnik' 
+                                     action='#{poljoController.dodajRasadnik()}'
+                                     class="btn btn-success btn-block">
+                    </h:commandButton>
+                </div>
+                <div class="clearfix" align="center">
+                    <h:outputText value='#{poljoController.porukaRasadnik}' style='color:red'></h:outputText>
+                </div> 
+                <hr></hr>
+                <div class="text-center">
+                    <a href="poljoprivrednik.xhtml">Povratak na pocetnu</a>
+                </div>
+            </h:form>
+        </div>
+    </h:body>
+</html>
+

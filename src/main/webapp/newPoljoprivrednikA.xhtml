@@ -1,0 +1,135 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <h:head>
+        <title>Novi poljoprivrednik</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
+        <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet"></link>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"></link>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"></link>
+        <h:outputStylesheet library="css" name="style.css"></h:outputStylesheet>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> 
+        <script src="https://www.google.com/recaptcha/api.js"></script>
+    </h:head>
+    <h:body id="slika">   
+        <div class="signup-form">
+            <h:form prependId="false">
+                <h2>Novi poljoprivrednik</h2>
+                <p class="hint-text">Napravi nalog za samo par minuta.</p>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <p:inputText class="form-control" 
+                                         value="#{registerController.p.ime}"
+                                         required="true"
+                                         requiredMessage="Unesi ime!"
+                                         id="kwIme">
+                            </p:inputText>
+                            <h:messages for='kwIme' style="color:red"></h:messages>
+                            <p:watermark for="kwIme" value="Ime" id="wmIme" />
+                        </div>
+                        <div class="col-xs-6">
+                            <p:inputText class="form-control" 
+                                         value="#{registerController.p.prezime}"
+                                         required="true"
+                                         requiredMessage="Unesi prezime!"
+                                         id="kwPrezime">
+                            </p:inputText>
+                            <h:messages for='kwPrezime' style="color:red"></h:messages>
+                            <p:watermark for="kwPrezime" value="Prezime" id="wmPrezime" />
+                        </div>
+                    </div>    
+                </div>
+                <div class="form-group">
+                    <p:inputText class="form-control"
+                                 value="#{registerController.p.username}"
+                                 required="true"
+                                 requiredMessage="Unesi username!"
+                                 id="kwUser">
+                    </p:inputText>
+                    <h:messages for='kwUser' style="color:red"></h:messages>
+                    <p:watermark for="kwUser" value="Username" id="wmUser" />
+                </div>
+                <div class="form-group">
+                    <p:password class="form-control"
+                                value="#{registerController.p.password}"
+                                required="true"
+                                requiredMessage="Unesi password!"
+                                validatorMessage="Min 7 karaktera - pocetno slovo, bar 1 veliko, 1 broj i 1 specijalni!"
+                                id="kwPass">
+                        <f:validateRegex pattern="((?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!?\.,@#$%]).{7,})" />
+                    </p:password>
+                    <h:messages for='kwPass' style="color:red"></h:messages>
+                    <p:watermark for="kwPass" value="Password" id="wmPass"></p:watermark>
+                </div>
+                <div class="form-group">
+                    <p:password class="form-control"
+                                value="#{registerController.p.password2}"
+                                required="true"
+                                requiredMessage="Unesi password!"
+                                validatorMessage="Min 7 karaktera - pocetno slovo, bar 1 veliko, 1 broj i 1 specijalni!"
+                                id="kwPass2">
+                    </p:password>
+                    <h:messages for='kwPass2' style="color:red"></h:messages>
+                    <p:watermark for="kwPass2" value="Ponovi password" id="wmPass2"></p:watermark>
+                </div>  
+                <div class="form-group">
+                    <h:inputText class="form-control"
+                                 value="#{registerController.p.datumRodjenja}"
+                                 required="true"
+                                 requiredMessage="Unesi datum rodjenja!"
+                                 id="kwDatum">
+                        <f:convertDateTime pattern="yyyy-mm-dd" />
+                    </h:inputText>
+                    <h:messages for='kwDatum' style="color:red"></h:messages>
+                    <p:watermark for="kwDatum" value="Godina rodjenja - YYYY-MM-DD" id="wmDatum"></p:watermark>
+                </div>
+                <div class="form-group">
+                    <p:inputText class="form-control"
+                                 value="#{registerController.p.mestoRodjenja}"
+                                 required="true"
+                                 requiredMessage="Unesi mesto rodjenja!"
+                                 id="kwMesto">
+                    </p:inputText>
+                    <h:messages for='kwMesto' style="color:red"></h:messages>
+                    <p:watermark for="kwMesto" value="Mesto rodjenja" id="wmMesto" />
+                </div>   
+                <div class="form-group">
+                    <p:inputText class="form-control"
+                                 value="#{registerController.p.telefon}"
+                                 required="true"
+                                 requiredMessage="Unesi telefon!"
+                                 id="kwTelefon">
+                    </p:inputText>
+                    <h:messages for='kwTelefon' style="color:red"></h:messages>
+                    <p:watermark for="kwTelefon" value="Telefon" id="wmTelefon" />
+                </div>      
+                <div class="form-group">                                                   
+                    <p:inputText class="form-control"                                       
+                                 value="#{registerController.p.mejl}"
+                                 required="true"
+                                 requiredMessage="Unesi mejl!"
+                                 id="kwMejl">
+                    </p:inputText>
+                    <h:messages for='kwMejl' style="color:red"></h:messages>
+                    <p:watermark for="kwMejl" value="Mejl" id="wmMejl"/>
+                </div>      
+                <br/>
+                <div class="form-group">
+                    <h:commandButton value='Kreiraj nalog' 
+                                     action='#{registerController.registracija(true,true)}'
+                                     class="btn btn-success btn-block">
+                    </h:commandButton>
+                </div>
+                <hr></hr>
+                <p class="text-center"> <a href="admin.xhtml">Na pocetnu</a> </p>   
+            </h:form>
+        </div>
+    </h:body>
+</html>
+

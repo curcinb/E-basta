@@ -1,0 +1,197 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Admin</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"></meta>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"></link>
+        <h:outputStylesheet library="css" name="style.css"></h:outputStylesheet>
+        <f:event type="preRenderView" listener="#{adminController.dohvatiSve()}"></f:event>
+    </h:head>
+    <h:body>
+        <!-- Fixed navbar -->
+        <nav class="navbar navbar-expand-md navbar-light  bg-light" style="border-bottom: 1px solid">
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Meni
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <h:form>
+                                <h:commandLink class="dropdown-item" value="Pocetna" action="#{adminController.pocetnaRedirect()}"></h:commandLink>
+                                <h:commandLink class="dropdown-item" value="Dodaj poljoprivrednika" action="#{adminController.poljoprivrednikRedirect()}"></h:commandLink>
+                                <h:commandLink class="dropdown-item" value="Dodaj preduzece" action="#{adminController.preduzeceRedirect()}"></h:commandLink>
+                            </h:form>
+                        </div>
+                    </li>
+                </ul>
+                <h:form class="form-inline mt-2 mt-md-0">
+                    <h:commandButton class="btn btn-outline-dark my-2 my-sm-0" action="#{adminController.lozinkaRedirect()}" value="Promena lozinke"></h:commandButton>
+                    &nbsp;
+                    <h:commandButton class="btn btn-outline-dark my-2 my-sm-0" action="#{loginController.logout()}" value="Logout"></h:commandButton>
+                </h:form>
+            </div>
+        </nav>
+        <div class="jumbotron jumbotron-fluid">
+            <div class="container">
+                <h1 class="display-4">Dobrodosli!</h1>
+            </div>
+        </div>
+        <div align="center">
+            <h:form id="form1" style="width:80%;">
+                <p:growl id="msgs1" showDetail="true"/>
+                <p:dataTable id="poljop" var="po" value="#{adminController.poljo}" editable="true" style="margin-bottom:20px; text-align: center;">
+                    <f:facet name="header">
+                        Pregled poljoprivrednika
+                    </f:facet>
+                    <p:ajax event="rowEdit" listener="#{adminController.onRowEdit1}" update=":form1:msgs1" />
+                    <p:ajax event="rowEditCancel" listener="#{adminController.onRowCancel1}" update=":form1:msgs1" />
+                    <p:column headerText="Ime">
+                        <p:cellEditor>
+                            <f:facet name="output"><h:outputText value="#{po.ime}" /></f:facet>
+                            <f:facet name="input"><p:inputText id="modelInput" value="#{po.ime}" style="width:100%"/></f:facet>
+                        </p:cellEditor>
+                    </p:column>
+                    <p:column headerText="Prezime">
+                        <p:cellEditor>
+                            <f:facet name="output"><h:outputText value="#{po.prezime}" /></f:facet>
+                            <f:facet name="input"><p:inputText value="#{po.prezime}" style="width:100%"/></f:facet>
+                        </p:cellEditor>
+                    </p:column>
+                    <p:column headerText="Username">
+                        <p:cellEditor>
+                            <f:facet name="output"><h:outputText value="#{po.username}" /></f:facet>
+                            <f:facet name="input"><p:inputText value="#{po.username}" style="width:100%"/></f:facet>
+                        </p:cellEditor>
+                    </p:column>
+                    <p:column headerText="Password">
+                        <p:cellEditor>
+                            <f:facet name="output"><h:outputText value="#{po.prezime}" /></f:facet>
+                            <f:facet name="input"><p:inputText value="#{po.prezime}" style="width:100%"/></f:facet>
+                        </p:cellEditor>
+                    </p:column>
+                    <p:column headerText="Datum rodjenja">
+                        <p:cellEditor>
+                            <f:facet name="output"><h:outputText value="#{po.datumRodjenja}" /></f:facet>
+                            <f:facet name="input"><p:calendar value="#{po.datumRodjenja}" style="width:100%"/></f:facet>
+                        </p:cellEditor>
+                    </p:column>
+                    <p:column headerText="Mesto rodnenja">
+                        <p:cellEditor>
+                            <f:facet name="output"><h:outputText value="#{po.mestoRodjenja}" /></f:facet>
+                            <f:facet name="input"><p:inputText value="#{po.mestoRodjenja}" style="width:100%"/></f:facet>
+                        </p:cellEditor>
+                    </p:column>
+                    <p:column headerText="Telefon">
+                        <p:cellEditor>
+                            <f:facet name="output"><h:outputText value="#{po.telefon}" /></f:facet>
+                            <f:facet name="input"><p:inputText value="#{po.telefon}" style="width:100%"/></f:facet>
+                        </p:cellEditor>
+                    </p:column>
+                    <p:column headerText="Mejl">
+                        <p:cellEditor>
+                            <f:facet name="output"><h:outputText value="#{po.mejl}" /></f:facet>
+                            <f:facet name="input"><p:inputText value="#{po.mejl}" style="width:100%"/></f:facet>
+                        </p:cellEditor>
+                    </p:column>
+                    <p:column headerText="Prihvacen">
+                        <p:cellEditor>
+                            <f:facet name="output"><h:outputText value="#{po.prihvacen}" /></f:facet>
+                            <f:facet name="input"><p:inputText value="#{po.prihvacen}" style="width:100%"/></f:facet>
+                        </p:cellEditor>
+                    </p:column>
+                    <p:column style="width:35px">
+                        <p:rowEditor />
+                    </p:column>
+                    <p:column>
+                        <h:commandButton value='Obrisi' 
+                                         action='#{adminController.obrisiPoljoprivrednika(po)}'
+                                         class="btn btn-light btn-block">
+                        </h:commandButton>
+                    </p:column>
+                </p:dataTable>
+            </h:form>
+        </div>
+        
+        <hr></hr>
+        
+        <div align="center">
+            <h:form id="form2" style="width:70%">
+                <p:growl id="msgs2" showDetail="true"/>
+                <p:dataTable id="predup" var="pr" value="#{adminController.predu}" editable="true" style="margin-bottom:20px; text-align: center;">
+                    <f:facet name="header">
+                        Pregled preduzeca
+                    </f:facet>
+                    <p:ajax event="rowEdit" listener="#{adminController.onRowEdit2}" update=":form2:msgs2" />
+                    <p:ajax event="rowEditCancel" listener="#{adminController.onRowCancel2}" update=":form2:msgs2" />
+                    <p:column headerText="Naziv">
+                        <p:cellEditor>
+                            <f:facet name="output"><h:outputText value="#{pr.naziv}" /></f:facet>
+                            <f:facet name="input"><p:inputText id="modelInput" value="#{pr.naziv}" style="width:100%"/></f:facet>
+                        </p:cellEditor>
+                    </p:column>
+                    <p:column headerText="Username">
+                       <p:cellEditor>
+                            <f:facet name="output"><h:outputText value="#{pr.username}" /></f:facet>
+                            <f:facet name="input"><p:inputText value="#{pr.username}" style="width:100%"/></f:facet>
+                        </p:cellEditor>
+                    </p:column>
+                    <p:column headerText="Password">
+                        <p:cellEditor>
+                            <f:facet name="output"><h:outputText value="#{pr.password}" /></f:facet>
+                            <f:facet name="input"><p:inputText value="#{pr.password}" style="width:100%"/></f:facet>
+                        </p:cellEditor>
+                    </p:column>
+                    <p:column headerText="Datum osnivanja">
+                        <p:cellEditor>
+                            <f:facet name="output"><h:outputText value="#{pr.datumOsnivanja}" /></f:facet>
+                            <f:facet name="input"><p:calendar value="#{pr.datumOsnivanja}" style="width:100%"/></f:facet>
+                        </p:cellEditor>
+                    </p:column>
+                    <p:column headerText="Mesto">
+                        <p:cellEditor>
+                            <f:facet name="output"><h:outputText value="#{pr.mesto}" /></f:facet>
+                            <f:facet name="input"><p:inputText value="#{pr.mesto}" style="width:100%"/></f:facet>
+                        </p:cellEditor>
+                    </p:column>
+                    <p:column headerText="Mejl">
+                        <p:cellEditor>
+                            <f:facet name="output"><h:outputText value="#{pr.mejl}" /></f:facet>
+                            <f:facet name="input"><p:inputText value="#{pr.mejl}" style="width:100%"/></f:facet>
+                        </p:cellEditor>
+                    </p:column>
+                    <p:column headerText="Prihvacen">
+                        <p:cellEditor>
+                            <f:facet name="output"><h:outputText value="#{pr.prihvacen}" /></f:facet>
+                            <f:facet name="input"><p:inputText value="#{pr.prihvacen}" style="width:100%"/></f:facet>
+                        </p:cellEditor>
+                    </p:column>
+                    <p:column style="width:35px">
+                        <p:rowEditor />
+                    </p:column>
+                    <p:column>
+                        <h:commandButton value='Obrisi' 
+                                         action='#{adminController.obrisiPreduzece(pr)}'
+                                         class="btn btn-light btn-block">
+                        </h:commandButton>
+                    </p:column>
+                </p:dataTable>
+            </h:form>
+        </div>
+        <footer class="footer">
+            <div class="container" align="center">
+                <span class="text-muted">PIA 2020 © Copyright Boško Ćurčin, SI ETF. </span>
+            </div>
+        </footer>
+        <!-- Bootstrap core JavaScript
+        ================================================== -->
+        <!-- Placed at the end of the document so the pages load faster -->
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    </h:body>
+</html>
+
